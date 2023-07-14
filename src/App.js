@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Header } from "./components/Header";
 
 import './sass/main.scss'
@@ -7,41 +7,57 @@ import { Workspace } from './components/Workspace';
 import { Modal } from './components/Modal';
 import { notes } from './dateDB/indexedDB';
 
-function App() {
+export const AppContext = React.createContext()
 
+function App() {
   const [database, setDatabase] = useState(notes)
-  const [selectedNote, setSelectedNote] = useState(database[0]);
+  const [selectedNote, setSelectedNote] = useState(null);
   const [editingEnabled, setEditingEnabled] = useState(false);
-  const [text, setText] = useState(selectedNote.text);
+  const [text, setText] = useState('');
   const [searchText, setSearchText] = useState('');
   const [modalOpen, setModalOpen] = useState(false)
+
+  useEffect(() => {
+
+    if (database.length > 0) {
+      setSelectedNote(database[0]);
+      setText(database[0].text);
+    }
+  }, [])
 
   // -------- сохранение текста в workspace
   const handleSave = (updatedText) => {
     const updatedNotes = database.map((note) =>
-      note.id === selectedNote.id ? { ...note, text: updatedText } : note
+      note.id === selectedNote?.id ? { ...note, text: updatedText } : note
     );
     setDatabase(updatedNotes);
   };
 
   // -------- удаление ItemNote
   const deleteSelectedNote = () => {
-    const noteId = database.findIndex(note => note.id === selectedNote.id);
+    const noteId = database.findIndex((note) => note.id === selectedNote?.id);
     if (noteId !== -1) {
       const updatedNotes = [...database];
       updatedNotes.splice(noteId, 1);
       setDatabase(updatedNotes)
       setModalOpen(false)
+      setEditingEnabled(false)
       setSelectedNote('')
     }
   }
 
   // -------- добавляем ItemNote
   const addNewNote = () => {
+    let id
+    if (database.length > 0) {
+      id = database[database.length - 1].id + 2
+    } else {
+      id = 1
+    }
     const newNote = {
       text: '',
       date: updatedDate(new Date()),
-      id: database[database.length - 1].id + 2,
+      id: id,
     }
     const updatedNotes = [...database];
     updatedNotes.push(newNote);
@@ -82,33 +98,38 @@ function App() {
     note.text.toLowerCase().includes(searchText.toLowerCase())
   );
 
+  const contextValue = {
+    database,
+    filteredNotes,
+    setSelectedNote,
+    selectedNote,
+    setEditingEnabled,
+    handleSave,
+    editingEnabled,
+    text,
+    setText,
+    deleteSelectedNote,
+    setModalOpen,
+    addNewNote,
+    enableEditing,
+    searchText,
+    setSearchText
+  };
+
   return (
     <div className="container">
-      <Header
-        setModalOpen={setModalOpen}
-        addNewNote={addNewNote}
-        enableEditing={enableEditing}
-        editingEnabled={editingEnabled}
-        searchText={searchText}
-        setSearchText={setSearchText}
-        setSelectedNote={setSelectedNote}
-      />
-      {modalOpen ? <Modal deleteSelectedNote={deleteSelectedNote} setModalOpen={setModalOpen} /> : null}
+      <AppContext.Provider value={contextValue}>
+        <Header />
+        {modalOpen && selectedNote ? <Modal /> : null}
+        {database.length === 0 === 0 ? null : (
+          <div className='flex'>
 
-      <div className='flex'>
-        <ListItem
-          database={database}
-          filteredNotes={filteredNotes}
-          setSelectedNote={setSelectedNote}
-          selectedNote={selectedNote}
-          setEditingEnabled={setEditingEnabled} />
-        <Workspace
-          selectedNote={selectedNote}
-          onSave={handleSave}
-          editingEnabled={editingEnabled}
-          text={text}
-          setText={setText} />
-      </div>
+            <ListItem />
+            <Workspace />
+          </div>
+        )}
+
+      </AppContext.Provider>
     </div>
   );
 }

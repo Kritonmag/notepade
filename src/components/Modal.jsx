@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import '../sass/main.scss'
+import { AppContext } from '../App';
 
-export const Modal = ({ deleteSelectedNote, setModalOpen }) => {
+export const Modal = () => {
+
+  const { deleteSelectedNote, setModalOpen } = useContext(AppContext)
 
   return (
     <div className="modal">

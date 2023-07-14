@@ -1,7 +1,10 @@
 .item__note {
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px solid $gray;
   border-right: 1px solid $gray;
   padding: 10px 5px;
+  height: 53px;
 }
 
 .selected {
@@ -15,7 +18,9 @@
   margin-bottom: 5px;
 }
 
-.note__date {}
+.note__date {
+  margin-top: auto;
+}
 
 
 @media (max-width: 460px) {

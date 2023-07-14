@@ -10,16 +10,21 @@
   background-color: $yellow;
 }
 
-.sidebar__list li:first-child:hover {
+.sidebar__plus:hover {
   background-color: $green;
 }
 
-.sidebar__list li:nth-child(2):hover {
+.sidebar__del:hover {
   background-color: $red;
 }
 
-.sidebar__list li:nth-child(3):hover {
+.sidebar__edit:hover {
   background-color: $yellow;
+}
+
+.sidebar__notActive {
+  background-color: #5a5252 !important;
+  cursor: no-drop !important;
 }
 
 .sidebar__item {

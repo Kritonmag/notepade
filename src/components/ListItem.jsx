@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import '../sass/main.scss'
 import { ItemNote } from './ItemNote'
+import { AppContext } from '../App';
 
-export const ListItem = ({ database, filteredNotes, setSelectedNote, selectedNote, setEditingEnabled }) => {
+export const ListItem = () => {
   const [selectedItem, setSelectedItem] = useState(null);
+  const { database, setSelectedNote, filteredNotes, selectedNote, setEditingEnabled } = useContext(AppContext)
 
   useEffect(() => {
     if (database.length > 0 && selectedItem === null) {

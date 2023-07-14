@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import '../sass/main.scss'
+import { AppContext } from '../App';
 
 
-export const Workspace = ({ selectedNote, onSave, editingEnabled, text, setText }) => {
+export const Workspace = () => {
+
+  const { selectedNote, handleSave, editingEnabled, text, setText } = useContext(AppContext)
 
   useEffect(() => {
     setText(selectedNote?.text || '');
@@ -12,12 +15,12 @@ export const Workspace = ({ selectedNote, onSave, editingEnabled, text, setText 
   const handleChangeText = (event) => {
     const updatedText = event.target.value;
     setText(updatedText);
-    onSave(updatedText);
+    handleSave(updatedText);
   };
 
   useEffect(() => {
     if (!editingEnabled) {
-      onSave(text);
+      handleSave(text);
     }
   }, [editingEnabled, text]);
 

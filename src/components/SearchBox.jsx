@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import '../sass/main.scss';
+import { AppContext } from '../App';
 
-export const SearchBox = ({ searchText, setSearchText, setSelectedNote }) => {
+export const SearchBox = () => {
+
+  const { searchText, setSearchText, setSelectedNote } = useContext(AppContext)
 
   const handleSearch = (event) => {
     setSearchText(event.target.value);
