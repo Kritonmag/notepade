@@ -1,0 +1,38 @@
+.form {
+  width: 70%;
+  display: flex;
+  justify-content: end;
+}
+
+.input__container {
+  position: relative;
+}
+
+.input__container i {
+  position: absolute;
+  left: 11px;
+  top: 2px;
+}
+
+
+.icon__placeholder {
+  background: url(../../img/search.svg) no-repeat;
+  width: 10%;
+  height: 100%;
+}
+
+.input {
+  padding: 5px;
+  padding-left: 35px;
+}
+
+.input::placeholder {
+  color: $gray;
+}
+
+@media (max-width: 460px) {
+  .form {
+    width: 100%;
+    justify-content: center;
+  }
+}
