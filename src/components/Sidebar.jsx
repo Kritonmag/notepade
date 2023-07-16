@@ -17,8 +17,6 @@ export const Sidebar = () => {
     }
   }
 
-  console.log(database.length)
-
   return (
     <ul className='sidebar__list'>
       <li className='sidebar__item sidebar__plus' onClick={addNewNote}>
